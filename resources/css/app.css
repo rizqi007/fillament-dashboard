@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 
-.filament-tables-actions-button {
-    background-color: #3b82f6 !important; /* Warna biru */
-    color: white !important;
+.bg-yellow-100 {
+    background-color: #e0f2fe !important; /* sky-100 */
 }

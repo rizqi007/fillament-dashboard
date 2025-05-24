@@ -14,6 +14,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
 use App\Exports\CompletedOrdersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,7 +28,9 @@ class OrderResource extends Resource
     protected static ?string $navigationLabel = 'Order'; // Nama di sidebar
     protected static ?string $modelLabel = 'Order'; // Ubah judul utama
     protected static ?string $pluralModelLabel = 'Order'; // Ubah di daftar
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
+   
+ 
 
 
 
@@ -54,7 +58,7 @@ class OrderResource extends Resource
                         ->preload()
                         ->searchable()
                         ->afterStateUpdated(fn ($state, callable $set, $get) => 
-                            dump('Produk Terpilih:', \App\Models\Product::find($state))
+                            null
                         ),
             
                     TextInput::make('quantity')
@@ -150,12 +154,13 @@ class OrderResource extends Resource
                             ->openUrlInNewTab(),
                     ]) //export pdf
 
-                    ->actions([
-                        EditAction::make()
-                            ->color('primary') // Warna biru
-                            ->outlined(), // Tambahkan border agar lebih terlihat
+                     ->actions([
+                        EditAction::make(),
+                        DeleteAction::make(),
+                    ])
+                    ->bulkActions([
+                        DeleteBulkAction::make(), // <-- ini yang benar untuk bulk delete
                     ]);
-
                     
     }
 
